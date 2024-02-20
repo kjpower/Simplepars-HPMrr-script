@@ -1,16 +1,16 @@
 <?php
 
 //скрипт в режиме теста и подбирает все включенные товары в качестве серии
-intall_hpmrr_table();
-$test_mode = true;
 $GLOBALS['db'] = $this->db;
 $GLOBALS['log'] = new Log('simplepars_hpmrr');
+
+$test_mode = true;
+intall_hpmrr_table();
 $pr_id = $script_data['permit']['add']['pr_id'];
 if(empty($pr_id))
 { 
     $pr_id = $script_data['permit']['up']['pr_id']; 
 }
-
 
 if($test_mode)
 {
