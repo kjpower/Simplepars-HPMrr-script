@@ -5,7 +5,7 @@ $GLOBALS['db'] = $this->db;
 $GLOBALS['log'] = new Log('simplepars_hpmrr');
 
 $test_mode = true;
-intall_hpmrr_table();
+install_hpmrr_table();
 $pr_id = $script_data['permit']['add']['pr_id'];
 if(empty($pr_id))
 { 
@@ -46,7 +46,7 @@ if($hpm_val && $hpm_pole && $hpm_status)
     }
 }
 
-function intall_hpmrr_table()
+function install_hpmrr_table()
 {
     $sql = "CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "hpmrr_links
     (
@@ -61,7 +61,7 @@ function intall_hpmrr_table()
     $GLOBALS['db']->query($sql);
 }
 
-function install_hpmrr_table()
+function check_hpmrr_table()
 {
     $sql = "SHOW TABLES LIKE '" . DB_PREFIX . "hpmrr_links'";
     $res = $GLOBALS['db']->query($sql);
