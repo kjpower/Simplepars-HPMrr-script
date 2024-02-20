@@ -1,5 +1,7 @@
 <?php
 
+//скрипт в режиме теста и подбирает все включенные товары в качестве серии
+intall_hpmrr_table();
 $test_mode = true;
 $GLOBALS['db'] = $this->db;
 $GLOBALS['log'] = new Log('simplepars_hpmrr');
@@ -8,6 +10,7 @@ if(empty($pr_id))
 { 
     $pr_id = $script_data['permit']['up']['pr_id']; 
 }
+
 
 if($test_mode)
 {
@@ -29,7 +32,7 @@ else
     }
 }
 
-if($hpm_val && $hpm_pole && $hpm_status && check_exist_hpmrr_table())
+if($hpm_val && $hpm_pole && $hpm_status)
 {
     $serie = get_serie($pr_id);
     //echo "<PRE>";var_dump($serie);echo "</PRE>";
@@ -43,7 +46,22 @@ if($hpm_val && $hpm_pole && $hpm_status && check_exist_hpmrr_table())
     }
 }
 
-function check_exist_hpmrr_table()
+function intall_hpmrr_table()
+{
+    $sql = "CREATE TABLE IF NOT EXISTS " . DB_PREFIX . "hpmrr_links
+    (
+        parent_id int(10) unsigned NOT NULL,
+        product_id int(10) unsigned NOT NULL,
+        sort int(10) unsigned DEFAULT NULL,
+        image varchar(255) DEFAULT NULL,
+        PRIMARY KEY (parent_id, product_id),
+        UNIQUE (product_id,parent_id)
+    ) CHARSET=utf8 DEFAULT COLLATE utf8_unicode_ci;";
+
+    $GLOBALS['db']->query($sql);
+}
+
+function install_hpmrr_table()
 {
     $sql = "SHOW TABLES LIKE '" . DB_PREFIX . "hpmrr_links'";
     $res = $GLOBALS['db']->query($sql);
@@ -189,7 +207,7 @@ function remove_link($parent_id, $pid)
 
 function add_link($parent_id, $pid)
 {
-    $format = "('%d','%d')";
+    $format = "('%d', '%d', '1', '')";
 
     if(is_array($pid))
     {
@@ -200,12 +218,12 @@ function add_link($parent_id, $pid)
             $vals[] = sprintf($format, $parent_id, $id);
         }
         $GLOBALS['log']->write('add links ' . $parent_id . " : " . implode(",", $pid));
-        $sql =  "INSERT INTO `" . DB_PREFIX . "hpmrr_links`(`parent_id`, `product_id`) VALUES " . implode(",", $vals);    
+        $sql =  "INSERT INTO `" . DB_PREFIX . "hpmrr_links`(`parent_id`, `product_id`, `sort`, `image`) VALUES " . implode(",", $vals);    
     }
     else
     {
         $GLOBALS['log']->write('add link ' . $parent_id . " : " . $pid);
-        $sql =  "INSERT INTO `" . DB_PREFIX . "hpmrr_links`(`parent_id`, `product_id`) VALUES " . sprintf($format, $parent_id, $pid);    
+        $sql =  "INSERT INTO `" . DB_PREFIX . "hpmrr_links`(`parent_id`, `product_id`, `sort`, `image`) VALUES " . sprintf($format, $parent_id, $pid);    
     }
     
     //echo $sql."</br>";
