@@ -3,7 +3,7 @@
 $GLOBALS['db'] = $this->db;
 $GLOBALS['log'] = new Log('simplepars_hpmrr');
 
-$hpm_pole = 'model';//$setting["hpm_sku"];
+$hpm_pole = $setting["hpm_sku"];
 $sid = $setting["sid"];
 if(!empty($setting["form"][$hpm_pole]))
 {
