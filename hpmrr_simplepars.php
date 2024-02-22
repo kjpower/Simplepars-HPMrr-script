@@ -1,9 +1,12 @@
 <?php
 
+// поле на основании которого будут строится связи
+$hpm_pole = "model"; 
+// можно ставить model, sku, upc, ean, jan, isbn, mpn, location
+
 $GLOBALS['db'] = $this->db;
 $GLOBALS['log'] = new Log('simplepars_hpmrr');
 
-$hpm_pole = $setting["hpm_sku"];
 $sid = $setting["sid"];
 if(!empty($setting["form"][$hpm_pole]))
 {
